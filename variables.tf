@@ -1,7 +1,10 @@
 # naming parts
-variable "infix" {
-  type    = string
-  default = "test"
+variable "org_infix" {
+  type = string
+}
+
+variable "project_infix" {
+  type = string
 }
 
 variable "env" {
@@ -11,23 +14,11 @@ variable "env" {
 
 # images
 variable "image_resource_group_name" {
-  type    = string
-  default = ""
+  type = string
 }
 
 variable "image_gallery_name" {
-  type    = string
-  default = ""
-}
-
-variable "mysqldb_image_name" {
-  type    = string
-  default = "img-wordpress-mysql"
-}
-
-variable "mysqldb_image_version" {
-  type    = string
-  default = "1.0.0"
+  type = string
 }
 
 variable "wordpress_image_name" {
@@ -40,20 +31,22 @@ variable "wordpress_image_version" {
   default = "1.0.0"
 }
 
-# network
-variable "private_domain_name" {
-  type    = string
-  default = ""
-}
-
 # ssh username and password
 variable "ssh_username" {
-  type    = string
-  default = "azureadmin"
+  type = string
 }
 
 variable "ssh_password" {
   type      = string
-  default   = ""
+  sensitive = true
+}
+
+# mysql username and password
+variable "mysql_username" {
+  type = string
+}
+
+variable "mysql_password" {
+  type      = string
   sensitive = true
 }

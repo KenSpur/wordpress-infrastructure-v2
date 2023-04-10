@@ -5,22 +5,17 @@ terraform {
       version = "=3.40.0"
     }
   }
+  backend "azurerm" {
+    container_name = "wordpress-infrastructure-v2"
+    key            = "terraform.tfstate"
+  }
 }
 
 provider "azurerm" {
-  features {
-    resource_group {
-      prevent_deletion_if_contains_resources = false
-    }
-  }
+  features {}
 }
 
 # resource group
-resource "azurerm_resource_group" "main" {
-  name     = "rg-${var.infix}-wordpress-${var.env}"
-  location = "West Europe"
-
-  tags = {
-    "managed_by" = "terraform"
-  }
+data "azurerm_resource_group" "main" {
+  name = "rg-${var.org_infix}-wordpress-infra-v2-${var.env}"
 }

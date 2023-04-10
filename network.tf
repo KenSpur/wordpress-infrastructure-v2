@@ -1,16 +1,16 @@
 # vnets
 resource "azurerm_virtual_network" "main" {
-  name                = "vnet-${var.infix}-${var.env}"
+  name                = "vnet-${var.org_infix}-${var.project_infix}-${var.env}"
   address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
 }
 
 # nsgs
 resource "azurerm_network_security_group" "frontend" {
-  name                = "nsg-${var.infix}-frontend-${var.env}"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  name                = "nsg-${var.org_infix}-${var.project_infix}-frontend-${var.env}"
+  location            = data.azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
 
   security_rule {
     name                       = "HTTP"
@@ -38,15 +38,15 @@ resource "azurerm_network_security_group" "frontend" {
 }
 
 resource "azurerm_network_security_group" "backend" {
-  name                = "nsg-${var.infix}-backend-${var.env}"
-  location            = azurerm_resource_group.main.location
-  resource_group_name = azurerm_resource_group.main.name
+  name                = "nsg-${var.org_infix}-${var.project_infix}-backend-${var.env}"
+  location            = data.azurerm_resource_group.main.location
+  resource_group_name = data.azurerm_resource_group.main.name
 }
 
 # subnets
 resource "azurerm_subnet" "frontend" {
   name                 = "snet-frontend"
-  resource_group_name  = azurerm_resource_group.main.name
+  resource_group_name  = data.azurerm_resource_group.main.name
   virtual_network_name = azurerm_virtual_network.main.name
 
   address_prefixes = ["10.0.0.0/24"]
@@ -56,10 +56,20 @@ resource "azurerm_subnet" "frontend" {
 
 resource "azurerm_subnet" "backend" {
   name                 = "snet-backend"
-  resource_group_name  = azurerm_resource_group.main.name
+  resource_group_name  = data.azurerm_resource_group.main.name
   virtual_network_name = azurerm_virtual_network.main.name
 
-  address_prefixes = ["10.0.1.0/24"]
+  address_prefixes  = ["10.0.1.0/24"]
+  service_endpoints = ["Microsoft.Storage"]
+  delegation {
+    name = "fs"
+    service_delegation {
+      name = "Microsoft.DBforMySQL/flexibleServers"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+      ]
+    }
+  }
 }
 
 # subnet nsg associations
@@ -71,17 +81,4 @@ resource "azurerm_subnet_network_security_group_association" "frontend" {
 resource "azurerm_subnet_network_security_group_association" "backend" {
   subnet_id                 = azurerm_subnet.backend.id
   network_security_group_id = azurerm_network_security_group.backend.id
-}
-
-# private dns zone
-resource "azurerm_private_dns_zone" "main" {
-  name                = var.private_domain_name
-  resource_group_name = azurerm_resource_group.main.name
-}
-
-resource "azurerm_private_dns_zone_virtual_network_link" "main" {
-  name                  = "private-dns-link"
-  resource_group_name   = azurerm_resource_group.main.name
-  private_dns_zone_name = azurerm_private_dns_zone.main.name
-  virtual_network_id    = azurerm_virtual_network.main.id
 }
