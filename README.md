@@ -1,22 +1,24 @@
 # 🗺️ wordpress-infrastructure-v2
 
 ## 🛠️ Technologies used
+- [Dev Container](https://code.visualstudio.com/docs/devcontainers/create-dev-container) Docker container as a full-featured development environment
+- [Github Codespaces](https://github.com/features/codespaces) Fully configured dev environments in the cloud
 - [Terraform](https://www.terraform.io/) Infrastructure as Code tool
 
 ## 🎯 Targets
 - [Azure](https://portal.azure.com/) Cloud computing platform
 
 
-## ⌨️ Usage
+## 🫳 Usage
 
-### Log in
+### ⌨️ Log in
 
 ```shell
 az login
 az account set -s $subscription_id
 ```
 
-### Terraform init
+### ⌨️ Terraform init
 
 ```shell
 terraform init \
