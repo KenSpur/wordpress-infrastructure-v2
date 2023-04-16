@@ -28,6 +28,9 @@
 	// "remoteUser": "root"
 
 	"containerEnv": {
+		"subscription_id": "${localEnv:SUBSCRIPTION_ID}",
+		"backend_resource_group_name": "${localEnv:BACKEND_RESOURCE_GROUP_NAME}",
+		"backend_storage_account_name": "${localEnv:BACKEND_STORAGE_ACCOUNT_NAME}",
 		"TF_VAR_org_infix": "${localEnv:ORG_INFIX}",
 		"TF_VAR_project_infix": "${localEnv:PROJECT_INFIX}",
 		"TF_VAR_env": "${localEnv:ENV}",
