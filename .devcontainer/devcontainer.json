@@ -22,8 +22,20 @@
 				"hashicorp.terraform"
 			]
 		}
-	}
+	},
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
+
+	"containerEnv": {
+		"TF_VAR_org_infix": "${localEnv:ORG_INFIX}",
+		"TF_VAR_project_infix": "${localEnv:PROJECT_INFIX}",
+		"TF_VAR_env": "${localEnv:ENV}",
+		"TF_VAR_image_resource_group_name": "${localEnv:IMAGE_RESOURCE_GROUP_NAME}",
+		"TF_VAR_image_gallery_name": "${localEnv:IMAGE_GALLERY_NAME}",
+		"TF_VAR_ssh_username": "${localEnv:SSH_USERNAME}",
+		"TF_VAR_ssh_password": "${localEnv:SSH_PASSWORD}",
+		"TF_VAR_mysql_username": "${localEnv:MYSQL_USERNAME}",
+		"TF_VAR_mysql_password": "${localEnv:MYSQL_PASSWORD}"
+	}
 }
