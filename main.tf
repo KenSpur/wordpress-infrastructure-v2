@@ -6,7 +6,6 @@ terraform {
     }
   }
   backend "azurerm" {
-    container_name = "wordpress-infrastructure-v2"
     key            = "terraform.tfstate"
   }
 }
@@ -17,5 +16,5 @@ provider "azurerm" {
 
 # resource group
 data "azurerm_resource_group" "main" {
-  name = "rg-${var.org_infix}-wordpress-infra-v2-${var.env}"
+  name = "rg-${var.org_infix}-wordpress-infra-v2-${var.env_suffix}"
 }

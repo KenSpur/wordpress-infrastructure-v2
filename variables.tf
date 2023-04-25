@@ -7,7 +7,7 @@ variable "project_infix" {
   type = string
 }
 
-variable "env" {
+variable "env_suffix" {
   type    = string
   default = "dev"
 }

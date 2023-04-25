@@ -23,5 +23,6 @@ az account set -s $subscription_id
 ```shell
 terraform init \
     -backend-config="resource_group_name=$backend_resource_group_name" \
-    -backend-config="storage_account_name=$backend_storage_account_name"
+    -backend-config="storage_account_name=$backend_storage_account_name" \
+    -backend-config="container_name=$backend_container_name"
 ```

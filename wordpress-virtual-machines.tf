@@ -1,7 +1,7 @@
 # public IP address
 resource "azurerm_public_ip" "wordpress" {
   count               = 2
-  name                = "pip-${var.org_infix}-${var.project_infix}-wordpress-${count.index}-${var.env}"
+  name                = "pip-${var.org_infix}-${var.project_infix}-wordpress-${count.index}-${var.env_suffix}"
   resource_group_name = data.azurerm_resource_group.main.name
   location            = data.azurerm_resource_group.main.location
   allocation_method   = "Static"
@@ -10,7 +10,7 @@ resource "azurerm_public_ip" "wordpress" {
 # network interface
 resource "azurerm_network_interface" "wordpress" {
   count               = 2
-  name                = "nic-${var.org_infix}-${var.project_infix}-wordpress-${count.index}-${var.env}"
+  name                = "nic-${var.org_infix}-${var.project_infix}-wordpress-${count.index}-${var.env_suffix}"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
 
@@ -24,7 +24,7 @@ resource "azurerm_network_interface" "wordpress" {
 }
 
 resource "azurerm_availability_set" "wordpress" {
-  name                         = "avail-${var.org_infix}-${var.project_infix}-wordpress-${var.env}"
+  name                         = "avail-${var.org_infix}-${var.project_infix}-wordpress-${var.env_suffix}"
   location                     = data.azurerm_resource_group.main.location
   resource_group_name          = data.azurerm_resource_group.main.name
   platform_fault_domain_count  = 2
@@ -32,17 +32,17 @@ resource "azurerm_availability_set" "wordpress" {
 }
 
 # image
-# data "azurerm_shared_image_version" "wordpress" {
-#   name                = var.wordpress_image_version
-#   image_name          = var.wordpress_image_name
-#   gallery_name        = var.image_gallery_name
-#   resource_group_name = var.image_resource_group_name
-# }
+data "azurerm_shared_image_version" "wordpress" {
+  name                = var.wordpress_image_version
+  image_name          = var.wordpress_image_name
+  gallery_name        = var.image_gallery_name
+  resource_group_name = var.image_resource_group_name
+}
 
 # virtual machine
 resource "azurerm_linux_virtual_machine" "wordpress" {
   count               = 2
-  name                = "vm-${var.org_infix}-${var.project_infix}-wordpress-${count.index}-${var.env}"
+  name                = "vm-${var.org_infix}-${var.project_infix}-wordpress-${count.index}-${var.env_suffix}"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   availability_set_id = azurerm_availability_set.wordpress.id
@@ -55,13 +55,7 @@ resource "azurerm_linux_virtual_machine" "wordpress" {
 
   disable_password_authentication = false
 
-  # source_image_id = data.azurerm_shared_image_version.wordpress.id
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "18.04-LTS"
-    version   = "latest"
-  }
+  source_image_id = data.azurerm_shared_image_version.wordpress.id
 
   os_disk {
     caching              = "ReadWrite"

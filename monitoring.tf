@@ -1,6 +1,6 @@
 # log analytics workspace
 resource "azurerm_log_analytics_workspace" "main" {
-  name                = "la-${var.org_infix}-${var.project_infix}-${var.env}"
+  name                = "la-${var.org_infix}-${var.project_infix}-${var.env_suffix}"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   sku                 = "PerGB2018"
@@ -9,7 +9,7 @@ resource "azurerm_log_analytics_workspace" "main" {
 
 # application insights
 resource "azurerm_application_insights" "main" {
-  name                = "appi-${var.org_infix}-${var.project_infix}-${var.env}"
+  name                = "appi-${var.org_infix}-${var.project_infix}-${var.env_suffix}"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   workspace_id        = azurerm_log_analytics_workspace.main.id

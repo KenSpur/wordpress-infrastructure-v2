@@ -1,6 +1,6 @@
 # vnets
 resource "azurerm_virtual_network" "main" {
-  name                = "vnet-${var.org_infix}-${var.project_infix}-${var.env}"
+  name                = "vnet-${var.org_infix}-${var.project_infix}-${var.env_suffix}"
   address_space       = ["10.0.0.0/16"]
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "main" {
 
 # nsgs
 resource "azurerm_network_security_group" "frontend" {
-  name                = "nsg-${var.org_infix}-${var.project_infix}-frontend-${var.env}"
+  name                = "nsg-${var.org_infix}-${var.project_infix}-frontend-${var.env_suffix}"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
 
@@ -38,7 +38,7 @@ resource "azurerm_network_security_group" "frontend" {
 }
 
 resource "azurerm_network_security_group" "backend" {
-  name                = "nsg-${var.org_infix}-${var.project_infix}-backend-${var.env}"
+  name                = "nsg-${var.org_infix}-${var.project_infix}-backend-${var.env_suffix}"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
 }
